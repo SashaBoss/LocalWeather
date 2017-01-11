@@ -5,6 +5,8 @@ var apiUrl = 'http://api.openweathermap.org/data/2.5/weather?';
 
 app.controller('LocalWeatherController', [
     '$scope', '$http', '$window', function ($scope, $http, $window) {
+        $scope.isCelsius = false;
+
         $scope.temperature = 0;
         $scope.humidity = 0;
         $scope.pressure = 0;
@@ -29,15 +31,21 @@ app.controller('LocalWeatherController', [
         }
 
         $scope.toggleTemperature = function() {
-            
+            if ($scope.isCelsius) {
+                $scope.temperature = fromCelsiusToFahrengheit($scope.temperature);
+            } else {
+                $scope.temperature = fromFahrengeightToCelsium($scope.temperature);
+            }
+            $scope.isCelsius = !$scope.isCelsius;
         }
 
         function parseData(response) {
             $scope.city = response.data.name;
-            $scope.temperature = response.data.main.temp;
+            $scope.temperature = fromKelvinsToCelsium(response.data.main.temp);
             $scope.humidity = response.data.main.humidity;
             $scope.pressure = response.data.main.pressure;
             $scope.weatherDescription = response.data.weather[0].description;
+            $scope.isCelsius = true;
         }
 
         function onError(errorData) {
@@ -46,6 +54,18 @@ app.controller('LocalWeatherController', [
 
         function createUrl(latitude, longitude) {
             return  apiUrl + 'lat=' + latitude + "&lon=" + longitude + "&APPID=" + apiKey;
+        }
+
+        function fromKelvinsToCelsium(kelvins) {
+            return kelvins - 273.15;
+        }
+
+        function fromCelsiusToFahrengheit(celsius) {
+            return ((9 * celsius)/5 + 32).toFixed(2);
+        }
+
+        function fromFahrengeightToCelsium(fahrs) {
+            return ((5 / 9) * (fahrs - 32)).toFixed(2);
         }
     }
 ]);
