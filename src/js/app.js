@@ -2,14 +2,13 @@
 
 var apiKey = 'ac6ddc9daa54317b3f571c9238e0006a';
 var apiUrl = 'http://api.openweathermap.org/data/2.5/weather?';
+var iconSrc = 'http://openweathermap.org/img/w/';
 
 app.controller('LocalWeatherController', [
     '$scope', '$http', '$window', function ($scope, $http, $window) {
         $scope.isCelsius = false;
-
+        $scope.type = '';
         $scope.temperature = 0;
-        $scope.humidity = 0;
-        $scope.pressure = 0;
         
         $scope.city = '';
 
@@ -33,18 +32,21 @@ app.controller('LocalWeatherController', [
         $scope.toggleTemperature = function() {
             if ($scope.isCelsius) {
                 $scope.temperature = fromCelsiusToFahrengheit($scope.temperature);
+                $scope.type = 'K';
             } else {
                 $scope.temperature = fromFahrengeightToCelsium($scope.temperature);
+                $scope.type = 'C';
             }
             $scope.isCelsius = !$scope.isCelsius;
         }
 
+        $scope.getLocalWeather();
+
         function parseData(response) {
             $scope.city = response.data.name;
             $scope.temperature = fromKelvinsToCelsium(response.data.main.temp);
-            $scope.humidity = response.data.main.humidity;
-            $scope.pressure = response.data.main.pressure;
             $scope.weatherDescription = response.data.weather[0].description;
+            $scope.icon = iconSrc + response.data.weather[0].icon + '.png';
             $scope.isCelsius = true;
         }
 

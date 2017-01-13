@@ -3,21 +3,21 @@
 <head>
     <title>Local Weather</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.0/css/foundation.css" rel="stylesheet" />
-    <link href="css/localWeather.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
 </head>
 <body ng-app="LocalWeather">
     <div class="row" ng-controller="LocalWeatherController">
         <div class="weather-info">
-            <span ng-bind="city"></span>
-            <span ng-bind="weatherDescription"></span>
-            <span ng-bind="humidity">Humidity:</span>
-            <span ng-bind="pressure">Pressure:</span>
-            <img ng-src=""/>
-            <a ng-click="toggleTemperature()">
-                <span ng-bind="temperature"></span>
-            </a>
+            <span class="city" ng-bind="city"></span>
+            <span class="description" ng-bind="weatherDescription"></span>
+            <img class="weather-icon" ng-src="{{icon}}" />
+            <div class="temperature-info-container">
+                <a ng-click="toggleTemperature()">
+                    <span class="temperature" ng-bind="temperature"></span>
+                    <span>&deg;{{type}}</span>
+                </a>
+            </div>
         </div>
-        <a class="button" ng-click="getLocalWeather()">My weather is:</a>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-route.min.js"></script>
